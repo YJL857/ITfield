@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @create 2022-06-23 0:09
  */
 @Configuration
-@EnableSwagger2 // 开启Swagger
+@EnableSwagger2 // 开启Swagger。
 @EnableKnife4j
 public class SwaggerConfig {
     @Bean(value = "createRestApi")
