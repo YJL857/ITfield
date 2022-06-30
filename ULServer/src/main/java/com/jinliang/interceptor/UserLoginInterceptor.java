@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
  * @create 2022-06-23 1:03
  */
 public class UserLoginInterceptor implements HandlerInterceptor {
-    @Override
+    /*@Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
         Object reglister = session.getAttribute("Reglister");
@@ -36,5 +36,5 @@ public class UserLoginInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
-    }
+    }*/
 }

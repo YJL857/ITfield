@@ -28,7 +28,7 @@ public class SwaggerConfig {
                 .build().apiInfo(new ApiInfoBuilder()
                         .title("SpringBoot整合Swagger")
                         .description("SpringBoot整合Swagger")
-                        .termsOfServiceUrl("http://localhost:8081/")
+                        .termsOfServiceUrl("https://localhost:443/")
                         .build());
     }
 }

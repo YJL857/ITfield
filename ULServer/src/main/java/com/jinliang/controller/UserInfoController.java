@@ -9,14 +9,12 @@ import com.jinliang.annotation.ResponseResult;
 import com.jinliang.entity.UserInfo;
 import com.jinliang.entity.basic.Result;
 import com.jinliang.service.IUserInfoService;
-import com.jinliang.ulenum.ResultEnum;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -26,6 +24,7 @@ import java.util.Map;
  * @author yejinliang
  * @since 2022-06-26
  */
+@Api(value = "用户管理",tags = "用户管理")
 @RestController
 @RequestMapping("/user")
 public class UserInfoController {
@@ -38,17 +37,20 @@ public class UserInfoController {
      * @param userVO
      * @return
      */
+    @ApiOperation(value = "注册用户", notes = "注册用户")
     @PostMapping("/createUser")
     public boolean createUser(@RequestBody UserInfo userVO) {
         return iUserInfoService.save(userVO);
     }
 
+    @ApiOperation(value = "登录", notes = "登录")
     @GetMapping("/login")
     @ResponseResult
     public boolean login(@RequestParam("account") String account, @RequestParam("password") String password) {
         return iUserInfoService.login(account, password);
     }
 
+    @ApiOperation(value = "分页查询用户", notes = "分页查询用户")
     @GetMapping("/findUserPage")
     @ResponseResult
     public Result findUserPage(@RequestParam("curPage") int curPage, @RequestParam("pageSize") int pageSize) {
@@ -58,16 +60,19 @@ public class UserInfoController {
         return Result.success(page);
     }
 
+    @ApiOperation(value = "根据id查询用户", notes = "根据id查询用户")
     @GetMapping("/findUserById")
     public UserInfo findUserById(@RequestParam("id") Long id) {
         return iUserInfoService.getById(id);
     }
 
+    @ApiOperation(value = "根据id更新用户", notes = "根据id更新用户")
     @PostMapping("/updateUser")
     public boolean updateUser(@RequestBody UserInfo userVO) {
         return iUserInfoService.updateById(userVO);
     }
 
+    @ApiOperation(value = "根据id删除用户", notes = "根据id删除用户")
     @GetMapping("/deleteUser")
     public boolean deleteUser(@RequestParam("id") Long id) {
         return iUserInfoService.removeById(id);
