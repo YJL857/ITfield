@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jinliang.annotation.ResponseResult;
+import com.jinliang.common.exception.YjlException;
 import com.jinliang.entity.UserInfo;
 import com.jinliang.entity.basic.Result;
 import com.jinliang.service.IUserInfoService;
@@ -52,7 +53,6 @@ public class UserInfoController {
 
     @ApiOperation(value = "分页查询用户", notes = "分页查询用户")
     @GetMapping("/findUserPage")
-    @ResponseResult
     public Result findUserPage(@RequestParam("curPage") int curPage, @RequestParam("pageSize") int pageSize) {
         Page<UserInfo> userInfoPage = new Page(curPage, pageSize); // 前端的page
         Page<UserInfo> page = new LambdaQueryChainWrapper<>(iUserInfoService.getBaseMapper()).page(userInfoPage);
@@ -76,6 +76,24 @@ public class UserInfoController {
     @GetMapping("/deleteUser")
     public boolean deleteUser(@RequestParam("id") Long id) {
         return iUserInfoService.removeById(id);
+    }
+
+    @ApiOperation(value = "模拟异常处理（自定义异常）", notes = "模拟异常处理（自定义异常）")
+    @GetMapping("/exception_my")
+    public boolean exception_my(@RequestParam("id") Long id) {
+        try {
+            int i = 10/0; // 模拟异常
+        } catch (Exception e) {
+            throw new YjlException(400,"自定义异常处理，程序错了");
+        }
+        return true;
+    }
+
+    @ApiOperation(value = "模拟异常处理（全局异常）", notes = "模拟异常处理（全局异常）")
+    @GetMapping("/exception_all")
+    public boolean exception_all(@RequestParam("id") Long id) {
+        int i = 10/0; // 模拟异常
+        return true;
     }
 
 }

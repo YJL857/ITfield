@@ -119,7 +119,6 @@
                     <nonFilteredFileExtensions>
                         <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
                         <nonFilteredFileExtension>jks</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>keystore</nonFilteredFileExtension>
                         <nonFilteredFileExtension>p12</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
