@@ -2,6 +2,7 @@ package com.jinliang.service;
 
 import com.jinliang.entity.UserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jinliang.entity.basic.Result;
 
 /**
  * <p>
@@ -13,6 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserInfoService extends IService<UserInfo> {
 
-    boolean login(String account, String password);
+    Result login(String account, String password);
 
 }

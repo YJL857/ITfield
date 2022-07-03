@@ -15,6 +15,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -47,7 +50,7 @@ public class UserInfoController {
     @ApiOperation(value = "登录", notes = "登录")
     @GetMapping("/login")
     @ResponseResult
-    public boolean login(@RequestParam("account") String account, @RequestParam("password") String password) {
+    public Result login(@RequestParam("account") String account, @RequestParam("password") String password) {
         return iUserInfoService.login(account, password);
     }
 

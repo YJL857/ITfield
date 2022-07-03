@@ -1,11 +1,19 @@
 package com.jinliang.common.interceptor;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.jinliang.common.exception.YjlException;
+import com.jinliang.common.util.RedisUtils;
+import com.jinliang.ulenum.ResultEnum;
+import io.netty.util.internal.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 
 /**
  * 登录检查
@@ -27,14 +35,23 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
        // 检查登录逻辑
-        HttpSession session = request.getSession();
-        Object reglister = session.getAttribute("loginUser");
-        if (reglister != null) {
+        String authorization = request.getHeader("Authorization");
+        DecodedJWT decode = JWT.decode(authorization);
+        String account = decode.getClaim("account").asString();
+        Object object = RedisUtils.getObjectForValue(account);
+        String redisValue = "";
+        if (object != null) {
+            redisValue = object.toString();
+        }
+        if (StringUtils.isEmpty(redisValue)) {
+            // 未登录
+            throw new YjlException(ResultEnum.NO_LOGING.getCode(),ResultEnum.NO_LOGING.getCn());
+        }
+        if (redisValue.equals(authorization)) {
             return true;
         } else {
-            request.setAttribute("msg", "请先登录!");
-            request.getRequestDispatcher("/").forward(request, response);
-            return false;
+            // 鉴权失败
+            throw new YjlException(ResultEnum.AUTHORIZATION_AUTHENTICATION_FAILED.getCode(),ResultEnum.AUTHORIZATION_AUTHENTICATION_FAILED.getCn());
         }
     }
 
