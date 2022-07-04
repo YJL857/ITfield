@@ -2,6 +2,7 @@ package com.jinliang.common.cache;
 
 import com.jinliang.common.util.RedisUtils;
 import org.apache.ibatis.cache.Cache;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,13 +33,13 @@ public class RedisCache implements Cache {
     @Override
     public void putObject(Object key, Object value) {
         // 使用redis的hash类型作为缓存存储模型  key  hashkey  value
-        RedisUtils.putObjectForHash(id,key,value,30L, TimeUnit.SECONDS);
+        RedisUtils.putObjectForHash(id, key, value);
     }
 
     @Override
     public Object getObject(Object key) {
         // 使用redis的hash类型取值
-        return RedisUtils.getObjectForHash(id,key);
+        return RedisUtils.getObjectForHash(id, key);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class RedisCache implements Cache {
      */
     @Override
     public void clear() {
-        RedisUtils.delete(id,false);
+        RedisUtils.delete(id, false);
     }
 
     @Override
@@ -59,8 +60,6 @@ public class RedisCache implements Cache {
         // 获取hash中的key value数量
         return RedisUtils.getHashSize(id);
     }
-
-
 
 
 }

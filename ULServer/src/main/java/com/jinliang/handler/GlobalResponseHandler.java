@@ -1,7 +1,7 @@
 package com.jinliang.handler;
 
-import com.jinliang.annotation.ResponseResult;
-import com.jinliang.entity.basic.Result;
+import com.jinliang.common.annotation.ResponseResult;
+import com.jinliang.common.entity.basic.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -23,7 +23,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
 
 //避免重复处理已经做过封装处理的返回值
         final String returnTypeName= methodParameter.getParameterType().getName();
-        boolean flag=!"com.jinliang.entity.basic.Result".equals(returnTypeName)
+        boolean flag=!"com.jinliang.common.entity.basic.Result".equals(returnTypeName)
                 &&!"org.springframework.http.ResponseEntity".equals(returnTypeName);
         log.info("supports:"+flag);
         return flag;
@@ -44,7 +44,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
         if(!mediaType.includes(MediaType.APPLICATION_JSON)){
             return o;  //返回值不是json类型
         }
-        if("com.jinliang.entity.basic.Result".equals(returnTypeName)){
+        if("com.jinliang.common.entity.basic.Result".equals(returnTypeName)){
             return o;
         }
         /*

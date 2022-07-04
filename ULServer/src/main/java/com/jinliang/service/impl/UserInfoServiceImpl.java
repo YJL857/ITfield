@@ -3,22 +3,22 @@ package com.jinliang.service.impl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jinliang.common.exception.YjlException;
 import com.jinliang.common.util.RedisUtils;
-import com.jinliang.entity.UserInfo;
-import com.jinliang.entity.basic.Result;
+import com.jinliang.entity.dao.UserInfoDao;
+import com.jinliang.common.entity.basic.Result;
+import com.jinliang.entity.vo.UserInfoVO;
 import com.jinliang.mapper.UserInfoMapper;
 import com.jinliang.service.IUserInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jinliang.ulenum.ResultEnum;
-import org.apache.catalina.session.StandardSession;
+import freemarker.template.utility.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpSession;
-import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,11 +30,18 @@ import java.util.concurrent.TimeUnit;
  * @since 2022-06-26
  */
 @Service
-public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> implements IUserInfoService {
+public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoDao> implements IUserInfoService {
 
+    /**
+     * 登录方法
+     *
+     * @param account
+     * @param password
+     * @return
+     */
     @Override
     public Result login(String account, String password) {
-        QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<UserInfoDao> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("account",account).eq("password",password);
         Map<String, Object> map = getMap(queryWrapper);
         if (CollectionUtils.isEmpty(map)){
@@ -49,6 +56,40 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
             return Result.success(token,ResultEnum.LOGING_SUCCESS.getCode(),ResultEnum.LOGING_SUCCESS.getCn());
         }
+    }
+
+    /**
+     * 创建用户
+     *
+     * @param userInfoVO
+     * @return
+     */
+    @Override
+    public Result createUser(UserInfoVO userInfoVO) {
+        checkUserVO(userInfoVO);
+        UserInfoDao userInfoDao = new UserInfoDao();
+        userInfoDao.setUserCode(userInfoVO.getUserCode());
+        userInfoDao.setUserName(userInfoVO.getUserName());
+        userInfoDao.setAccount(userInfoVO.getAccount());
+        userInfoDao.setPassword(userInfoVO.getPassword());
+        save(userInfoDao);
+        return new Result(userInfoDao,200,"创建成功");
+    }
+
+    private void checkUserVO(UserInfoVO userInfoVO){
+        if (StringUtils.isEmpty(userInfoVO.getUserCode())) {
+            throw new YjlException(400,"用户编码不能为空");
+        }
+        if (StringUtils.isEmpty(userInfoVO.getUserName())) {
+            throw new YjlException(400,"用户名称不能为空");
+        }
+        if (StringUtils.isEmpty(userInfoVO.getAccount())) {
+            throw new YjlException(400,"账号不能为空");
+        }
+        if (StringUtils.isEmpty(userInfoVO.getPassword())) {
+            throw new YjlException(400,"密码不能为空");
+        }
+
     }
 
     /**

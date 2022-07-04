@@ -1,6 +1,6 @@
 package com.jinliang.service.impl;
 
-import com.jinliang.entity.RoleInfo;
+import com.jinliang.entity.dao.RoleInfoDao;
 import com.jinliang.mapper.RoleInfoMapper;
 import com.jinliang.service.IRoleInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2022-07-03
  */
 @Service
-public class RoleInfoServiceImpl extends ServiceImpl<RoleInfoMapper, RoleInfo> implements IRoleInfoService {
+public class RoleInfoServiceImpl extends ServiceImpl<RoleInfoMapper, RoleInfoDao> implements IRoleInfoService {
 
 }

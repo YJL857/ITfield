@@ -1,6 +1,6 @@
 package com.jinliang.service;
 
-import com.jinliang.entity.RoleInfo;
+import com.jinliang.entity.dao.RoleInfoDao;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author yejinliang
  * @since 2022-07-03
  */
-public interface IRoleInfoService extends IService<RoleInfo> {
+public interface IRoleInfoService extends IService<RoleInfoDao> {
 
 }

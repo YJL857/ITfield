@@ -1,6 +1,6 @@
 package com.jinliang.common.exception;
 
-import com.jinliang.entity.basic.Result;
+import com.jinliang.common.entity.basic.Result;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

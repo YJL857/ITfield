@@ -5,15 +5,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jinliang.common.exception.YjlException;
 import com.jinliang.common.util.RedisUtils;
 import com.jinliang.ulenum.ResultEnum;
-import io.netty.util.internal.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.Enumeration;
 
 /**
  * 登录检查

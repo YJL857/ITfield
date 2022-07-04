@@ -1,4 +1,4 @@
-package com.jinliang.entity.basic;
+package com.jinliang.common.entity.basic;
 
 import com.jinliang.ulenum.ResultEnum;
 import lombok.AllArgsConstructor;

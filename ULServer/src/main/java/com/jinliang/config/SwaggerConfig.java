@@ -1,6 +1,7 @@
 package com.jinliang.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -24,6 +25,13 @@ import java.util.List;
 @EnableSwagger2 // 开启Swagger。
 @EnableKnife4j
 public class SwaggerConfig {
+    @Value("${mybatis-plus-father-package}")
+    private String fatherPackage;
+
+    @Value("${swagger-path}")
+    private String path;
+
+
     @Bean(value = "createRestApi")
     public Docket createRestApi() {
         //=====添加head参数start============================
@@ -34,12 +42,12 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .pathMapping("/")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.jinliang.controller"))
+                .apis(RequestHandlerSelectors.basePackage(fatherPackage + ".controller"))
                 .paths(PathSelectors.any())
                 .build().apiInfo(new ApiInfoBuilder()
                         .title("SpringBoot整合Swagger")
                         .description("SpringBoot整合Swagger")
-                        .termsOfServiceUrl("https://localhost:443/")
+                        .termsOfServiceUrl(path)
                         .build())
                 .globalOperationParameters(pars);
     }

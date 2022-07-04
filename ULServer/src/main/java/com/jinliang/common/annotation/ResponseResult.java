@@ -1,4 +1,4 @@
-package com.jinliang.annotation;
+package com.jinliang.common.annotation;
 
 import java.lang.annotation.*;
 
