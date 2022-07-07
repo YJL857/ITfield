@@ -1,4 +1,4 @@
-package com.jinliang.ulenum;
+package com.jinliang.common.itenum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

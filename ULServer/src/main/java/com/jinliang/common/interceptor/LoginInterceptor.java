@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jinliang.common.exception.YjlException;
 import com.jinliang.common.util.RedisUtils;
-import com.jinliang.ulenum.ResultEnum;
+import com.jinliang.common.itenum.ResultEnum;
 import com.jinliang.util.UserUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;

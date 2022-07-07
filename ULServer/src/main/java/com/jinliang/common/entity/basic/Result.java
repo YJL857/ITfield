@@ -1,6 +1,6 @@
 package com.jinliang.common.entity.basic;
 
-import com.jinliang.ulenum.ResultEnum;
+import com.jinliang.common.itenum.ResultEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
