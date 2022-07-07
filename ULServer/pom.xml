@@ -78,6 +78,12 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
+        <!--腾讯云-->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.6.75</version>
+        </dependency>
         <!--token依赖包-->
         <dependency>
             <groupId>com.auth0</groupId>

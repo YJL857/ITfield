@@ -32,4 +32,6 @@ public class UserInfoDao extends BasicInfo implements Serializable {
     private String account;
 
     private String password;
+
+    private String avatarUrl;
 }

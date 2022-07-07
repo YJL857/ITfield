@@ -4,7 +4,11 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.exception.CosClientException;
+import com.qcloud.cos.exception.CosServiceException;
+import com.qcloud.cos.exception.MultiObjectDeleteException;
 import com.qcloud.cos.http.HttpProtocol;
+import com.qcloud.cos.model.*;
 import com.qcloud.cos.region.Region;
 import com.qcloud.cos.transfer.TransferManager;
 import com.qcloud.cos.transfer.TransferManagerConfiguration;
@@ -12,6 +16,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -35,10 +41,14 @@ public class ConstantPropertiesUtil implements InitializingBean {
     @Value("${tencent.cos.file.bucketname}")
     private String bucketname;
 
+    @Value("${tencent.cos.file.avatar_url}")
+    private String avatarUrl;
+
     public static String END_POINT;
     public static String ACCESS_KEY_ID;
     public static String ACCESS_KEY_SECRET;
     public static String BUCKET_NAME;
+    public static String AVATAR_URL;
 
     public static COSClient cosClient;
 
@@ -49,6 +59,7 @@ public class ConstantPropertiesUtil implements InitializingBean {
         ACCESS_KEY_ID = secretId;
         ACCESS_KEY_SECRET = secretKey;
         BUCKET_NAME = bucketname;
+        AVATAR_URL = avatarUrl;
     }
 
     public static COSClient createCOSClient() {
@@ -75,8 +86,8 @@ public class ConstantPropertiesUtil implements InitializingBean {
         // 设置高级接口的配置项
         // 分块上传阈值和分块大小分别为 5MB 和 1MB
         TransferManagerConfiguration transferManagerConfiguration = new TransferManagerConfiguration();
-        transferManagerConfiguration.setMultipartUploadThreshold(5*1024*1024);
-        transferManagerConfiguration.setMinimumUploadPartSize(1*1024*1024);
+        transferManagerConfiguration.setMultipartUploadThreshold(5 * 1024 * 1024);
+        transferManagerConfiguration.setMinimumUploadPartSize(1 * 1024 * 1024);
         transferManager.setConfiguration(transferManagerConfiguration);
 
         return transferManager;
@@ -86,6 +97,65 @@ public class ConstantPropertiesUtil implements InitializingBean {
         // 指定参数为 true, 则同时会关闭 transferManager 内部的 COSClient 实例。
         // 指定参数为 false, 则不会关闭 transferManager 内部的 COSClient 实例。
         transferManager.shutdownNow(true);
+    }
+
+
+    public static List<DeleteObjectsRequest.KeyVersion> getKeyList(String bucketName, String key) {
+        List<DeleteObjectsRequest.KeyVersion> keyList = new ArrayList<>();
+        COSClient cosClient = createCOSClient();
+        ListObjectsRequest listObjectsRequest = new ListObjectsRequest();
+        listObjectsRequest.setBucketName(bucketName);
+        listObjectsRequest.setPrefix(key);
+        // 设置最大列出多少个对象, 一次 listobject 最大支持1000
+        listObjectsRequest.setMaxKeys(2);
+        // 保存列出的结果
+        ObjectListing objectListing = null;
+        try {
+            objectListing = cosClient.listObjects(listObjectsRequest);
+        } catch (CosServiceException e) {
+            e.printStackTrace();
+        } catch (CosClientException e) {
+            e.printStackTrace();
+        }
+// object summary 表示此次列出的对象列表
+        List<COSObjectSummary> cosObjectSummaries = objectListing.getObjectSummaries();
+        for (COSObjectSummary cosObjectSummary : cosObjectSummaries) {
+            // 对象的 key
+            String key1 = cosObjectSummary.getKey();
+            // 对象的etag
+            String etag = cosObjectSummary.getETag();
+            // 对象的长度
+            long fileSize = cosObjectSummary.getSize();
+            // 对象的存储类型
+            String storageClasses = cosObjectSummary.getStorageClass();
+            keyList.add(new DeleteObjectsRequest.KeyVersion(key1));
+        }
+// 确认本进程不再使用 cosClient 实例之后，关闭之
+        cosClient.shutdown();
+        return keyList;
+    }
+
+    public static DeleteObjectsResult batchDeleteKeys(String bucketname, List<DeleteObjectsRequest.KeyVersion> keys){
+        COSClient cosClient = createCOSClient();
+        String bucketName = bucketname;
+        DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName);
+        deleteObjectsRequest.setKeys(keys);
+        DeleteObjectsResult deleteObjectsResult = null;
+        try {
+            deleteObjectsResult = cosClient.deleteObjects(deleteObjectsRequest);
+        } catch (MultiObjectDeleteException mde) {
+            // 如果部分删除成功部分失败, 返回 MultiObjectDeleteException
+            List<DeleteObjectsResult.DeletedObject> deleteObjects = mde.getDeletedObjects();
+            List<MultiObjectDeleteException.DeleteError> deleteErrors = mde.getErrors();
+        } catch (CosServiceException e) {
+            e.printStackTrace();
+        } catch (CosClientException e) {
+            e.printStackTrace();
+        }
+
+// 确认本进程不再使用 cosClient 实例之后，关闭之
+        cosClient.shutdown();
+        return deleteObjectsResult;
     }
 
 }
