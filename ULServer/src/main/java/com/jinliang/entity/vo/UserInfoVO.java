@@ -1,9 +1,7 @@
 package com.jinliang.entity.vo;
 
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -16,12 +14,11 @@ import java.io.Serializable;
 @Setter
 @Data
 public class UserInfoVO implements Serializable {
+    private String telephone;
 
-    private String userCode;
+    private String mail;
 
     private String userName;
-
-    private String account;
 
     private String password;
 }

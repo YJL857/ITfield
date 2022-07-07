@@ -4,6 +4,9 @@ import com.jinliang.entity.dao.UserInfoDao;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jinliang.common.entity.basic.Result;
 import com.jinliang.entity.vo.UserInfoVO;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * <p>
@@ -15,8 +18,10 @@ import com.jinliang.entity.vo.UserInfoVO;
  */
 public interface IUserInfoService extends IService<UserInfoDao> {
 
-    Result login(String account, String password);
+    Result login(UserInfoVO userInfoVO);
 
     Result createUser(UserInfoVO userInfoVO);
+
+    Result uploadUserAvatar(MultipartFile file) throws IOException;
 
 }

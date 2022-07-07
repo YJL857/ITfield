@@ -1,4 +1,4 @@
-package com.jinliang.unit;
+package com.jinliang.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +9,7 @@ import java.util.TimeZone;
  * @author yejinliang
  * @create 2022-06-26 18:09
  */
-public class timeUnit {
+public class TimeUtil {
     //普通时间转为UTC
     public static String localToUTC(String localTimeStr) {
         try {

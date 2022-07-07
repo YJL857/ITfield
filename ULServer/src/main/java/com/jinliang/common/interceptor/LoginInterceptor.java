@@ -5,6 +5,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jinliang.common.exception.YjlException;
 import com.jinliang.common.util.RedisUtils;
 import com.jinliang.ulenum.ResultEnum;
+import com.jinliang.util.UserUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -45,6 +46,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             throw new YjlException(ResultEnum.NO_LOGING.getCode(),ResultEnum.NO_LOGING.getCn());
         }
         if (redisValue.equals(authorization)) {
+            UserUtil.account = account;
             return true;
         } else {
             // 鉴权失败

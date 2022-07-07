@@ -17,15 +17,23 @@ public class Result {
 
     private String message;
 
+    public Result(ResultEnum resultEnum) {
+        super();
+    }
+
     public static Result success(Object data) {
         return new Result(data, ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getValue());
     }
 
-    public static Result success(Object data, Integer code, String message) {
-        return new Result(data,code,message);
+    public static Result success(Object data, ResultEnum resultEnum) {
+        return new Result(data,resultEnum.getCode(),resultEnum.getCn());
     }
 
     public static Result fail(Object data, Integer code, String message) {
         return new Result(data, code, message);
+    }
+
+    public static Result fail(ResultEnum resultEnum) {
+        return new Result(null, resultEnum.getCode(),resultEnum.getCn());
     }
 }

@@ -1,11 +1,11 @@
 package com.jinliang.entity.dao;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-
 import com.jinliang.common.entity.basic.BasicInfo;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -20,6 +20,10 @@ import lombok.Setter;
 @TableName("user_info")
 public class UserInfoDao extends BasicInfo implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    private String telephone;
+
+    private String mail;
 
     private String userCode;
 

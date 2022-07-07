@@ -4,17 +4,18 @@ package com.jinliang.controller;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jinliang.common.annotation.ResponseResult;
+import com.jinliang.common.entity.basic.Result;
 import com.jinliang.common.exception.YjlException;
 import com.jinliang.entity.dao.UserInfoDao;
-import com.jinliang.common.entity.basic.Result;
 import com.jinliang.entity.vo.UserInfoVO;
 import com.jinliang.service.IUserInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -32,6 +33,12 @@ public class UserInfoController {
     @Autowired
     private IUserInfoService iUserInfoService;
 
+    @ApiOperation(value = "上传用户头像", notes = "上传用户头像")
+    @PostMapping("/uploadUserAvatar")
+    public Result uploadUserAvatar(MultipartFile file) throws IOException {
+        return iUserInfoService.uploadUserAvatar(file);
+    }
+
     /**
      * 注册用户
      *
@@ -45,10 +52,10 @@ public class UserInfoController {
     }
 
     @ApiOperation(value = "登录", notes = "登录")
-    @GetMapping("/login")
+    @PostMapping("/login")
     @ResponseResult
-    public Result login(@RequestParam("account") String account, @RequestParam("password") String password) {
-        return iUserInfoService.login(account, password);
+    public Result login(@RequestBody UserInfoVO userVO) {
+        return iUserInfoService.login(userVO);
     }
 
     @ApiOperation(value = "分页查询用户", notes = "分页查询用户")
