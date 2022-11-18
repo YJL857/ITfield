@@ -129,7 +129,9 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoDao
         QueryWrapper<UserInfoDao> queryWrapper = new QueryWrapper<>();
         String account = "";
         String password = userInfoVO.getPassword();
-        if (StringUtils.isNotEmpty(userInfoVO.getMail())) {
+        if (StringUtils.isNotEmpty(userInfoVO.getAccount())) {
+            account = userInfoVO.getAccount();
+        } else if (StringUtils.isNotEmpty(userInfoVO.getMail())) {
             account = userInfoVO.getMail();
         } else if (StringUtils.isNotEmpty(userInfoVO.getTelephone())) {
             account = userInfoVO.getTelephone();

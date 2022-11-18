@@ -3,14 +3,19 @@ package com.jinliang.common.entity.basic;
 import com.jinliang.common.itenum.ResultEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * @author yejinliang
  * @create 2022-06-26 17:04
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor // 有参构造
-public class Result {
+public class Result implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Object data;
 
     private Integer code;
@@ -37,3 +42,4 @@ public class Result {
         return new Result(null, resultEnum.getCode(),resultEnum.getCn());
     }
 }
+

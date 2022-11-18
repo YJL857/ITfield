@@ -14,6 +14,8 @@ import java.io.Serializable;
 @Setter
 @Data
 public class UserInfoVO implements Serializable {
+    private String account;
+
     private String telephone;
 
     private String mail;
